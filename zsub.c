@@ -7,6 +7,7 @@
  *    -s <identity>    Set socket identity
  *
  * @author Ori Livneh <ori@wikimedia.org>
+ * @license GPL v2 or later; see LICENSE
  * @file
  */
 
