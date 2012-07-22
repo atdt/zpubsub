@@ -1,0 +1,33 @@
+ZPubSub
+=======
+
+ZPubSub comprises `zpub` and `zsub`, a pair of utilities for piping data
+between hosts using ØMQ's PubSub sockets.
+
+ØMQ's PubSub pattern absolves the server from caring about whether any clients
+are listening. Clients, on the other hand, are able to detect disconnects and
+re-request data they missed. This makes ZPubSub ideal for aggregating logs from
+servers without burdening them with additional responsibilities or points of
+failure.
+
+Usage
+=====
+
+```
+zpub -- pipe lines from stdin to zmq pub socket
+
+Usage: zpub [options]
+  -p <port>        Server port (default: 8006)
+  -i <interface>   Interface to bind (default: *)
+  -m <count>       ZeroMQ high-water mark (default: 1000)
+  -h               Show this message and exit
+```
+
+```
+zsub -- pipe zmq sub socket to stdout
+
+Usage: zsub [options] host:port
+  -h               Show this message and exit
+  -f <filter>      Subscribe to filter
+  -s <identity>    Set socket identity
+```
