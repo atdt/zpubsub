@@ -1,24 +1,16 @@
-prefix		= /usr/local
-exec_prefix	= $(prefix)
-bindir		= $(exec_prefix)/bin
-CFLAGS		= -Wall -O3 --std=c99 -pedantic -I. -I/opt/local/include
-LIBS		= -lczmq
-PREFIX		?= /usr/local
-INSTALL_BIN 	= $(PREFIX)/bin
-INSTALL		= cp -pf
+SRC_DIR = src
+REV 	= $(shell git rev-parse HEAD | cut -c1-10)
 
+.PHONY: project_src
 
-
-all: zpubsub
-
-zpubsub:
-	$(CC) $(LDFLAGS) $(CFLAGS) zpub.c -o zpub $(LIBS)
-	$(CC) $(LDFLAGS) $(CFLAGS) zsub.c -o zsub $(LIBS)
-
-install: all
-	mkdir -p $(INSTALL_BIN)
-	$(INSTALL) zpub $(INSTALL_BIN)
-	$(INSTALL) zsub $(INSTALL_BIN)
+project_src:
+	$(MAKE) -C $(SRC_DIR)
 
 clean:
-	rm -f zpub zsub
+	$(MAKE) -C $(SRC_DIR) clean
+
+install:
+	$(MAKE) -C $(SRC_DIR) install
+
+dist:
+	$(MAKE) -C $(SRC_DIR) dist

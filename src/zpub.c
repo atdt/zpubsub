@@ -8,7 +8,7 @@
  *    -h               Show this message and exit
  *
  * @author Ori Livneh <ori@wikimedia.org>
- * @license GPL v2 or later; see LICENSE
+ * @license GPL v2 or later; see COPYING
  * @file
  */
 
