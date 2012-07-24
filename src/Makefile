@@ -1,4 +1,4 @@
-CFLAGS		= -Wall -O3 --std=c99 
+CFLAGS		= -Wall -O3 --std=c99 -pedantic -I. -I/opt/local/include
 LIBS		= -lczmq
 PREFIX		?= /usr/local
 INSTALL_BIN 	= $(PREFIX)/bin
@@ -10,11 +10,13 @@ BUILDDIR        ?= ../build
 
 all:
 	mkdir -p $(BUILDDIR)
-	$(CC) $(CFLAGS) zpub.c -o $(BUILDDIR)/zpub $(LIBS)
+	$(CC) $(LDFLAGS) $(CFLAGS) zpub.c -o $(BUILDDIR)/zpub $(LIBS)
+	$(CC) $(LDFLAGS) $(CFLAGS) zsub.c -o $(BUILDDIR)/zsub $(LIBS)
 
 install: all
 	mkdir -p $(INSTALL_BIN)
 	$(INSTALL) zpub $(INSTALL_BIN)
+	$(INSTALL) zsub $(INSTALL_BIN)
 	$(INSTALL) ../man/zpubsub.1 $(MAN1DIR)
 
 dist:

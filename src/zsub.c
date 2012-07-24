@@ -37,8 +37,8 @@ static void usage() {
 }
 
 /* Read line from socket to stdout */
-static int s_print(zloop_t *loop, zmq_pollitem_t *poller, void *arg) {
-    char *line = zstr_recv(poller->socket);
+static int s_print(zloop_t *loop, void *socket, void *arg) {
+    char *line = zstr_recv(socket);
     if (line) {
         printf("%s", line);
         free(line);
@@ -95,8 +95,7 @@ int main(int argc, char **argv)
 
     /* Set up reactor for ZMQ_POLLIN event */
     zloop_t *loop = zloop_new();
-    zmq_pollitem_t poll_sub = { sub, 0, ZMQ_POLLIN };
-    zloop_poller(loop, &poll_sub, s_print, NULL);
+    zloop_reader(loop, sub, s_print, NULL);
     zloop_start(loop);
 
     /* Clean-up */
