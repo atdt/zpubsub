@@ -37,8 +37,8 @@ static void usage() {
 }
 
 /* Read line from socket to stdout */
-static int s_print(zloop_t *loop, void *socket, void *arg) {
-    char *line = zstr_recv(socket);
+static int s_print(zloop_t *loop, zmq_pollitem_t *poller, void *arg) {
+    char *line = zstr_recv(poller->socket);
     if (line) {
         printf("%s", line);
         free(line);
@@ -86,20 +86,24 @@ int main(int argc, char **argv)
     argParse(argc, argv);
 
     if (config.filter) {
-        zsockopt_set_subscribe(sub, config.filter);
+        zsocket_set_subscribe(sub, config.filter);
     }
     if (config.sid) {
-        zsockopt_set_identity(sub, config.sid);
+        zsocket_set_identity(sub, config.sid);
     }
     zsocket_connect(sub, config.endpoint);
 
     /* Set up reactor for ZMQ_POLLIN event */
     zloop_t *loop = zloop_new();
-    zloop_reader(loop, sub, s_print, NULL);
+    assert(loop);
+
+    zmq_pollitem_t poll_sub = { sub, 0, ZMQ_POLLIN };
+    zloop_poller(loop, &poll_sub, s_print, NULL);
     zloop_start(loop);
 
     /* Clean-up */
     zloop_destroy(&loop);
+    assert(loop == NULL);
     zctx_destroy(&ctx);
 
     exit(EXIT_SUCCESS);
