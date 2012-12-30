@@ -1,5 +1,5 @@
 CFLAGS		= -Wall -O3 --std=c99 -pedantic -I. -I/opt/local/include
-LIBS		= -lczmq
+LIBS		= -lczmq -lzmq
 PREFIX		?= /usr/local
 INSTALL_BIN 	= $(PREFIX)/bin
 INSTALL		= cp -pf
@@ -15,8 +15,8 @@ all:
 
 install: all
 	mkdir -p $(INSTALL_BIN)
-	$(INSTALL) zpub $(INSTALL_BIN)
-	$(INSTALL) zsub $(INSTALL_BIN)
+	$(INSTALL) $(BUILDDIR)/zpub $(INSTALL_BIN)
+	$(INSTALL) $(BUILDDIR)/zsub $(INSTALL_BIN)
 	$(INSTALL) ../man/zpubsub.1 $(MAN1DIR)
 
 dist:

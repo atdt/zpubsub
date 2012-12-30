@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     /* Flush pending messages on close */
     zctx_set_linger(ctx, 0);
 
-    zsockopt_set_hwm(pub, config.hwm);
+    zctx_set_hwm(pub, config.hwm);
     zsocket_bind(pub, "tcp://%s:%d", config.iface, config.port);
 
     /* Read line and write to zmq socket until EOF */
